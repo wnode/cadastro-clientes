@@ -1,8 +1,5 @@
 <?php
 
-// Desafio Essentia Desenvolvedor - Back End
-
-// Controller: app/Http/Controllers/ClienteController.php
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
@@ -11,82 +8,132 @@ use Illuminate\Support\Facades\Storage;
 
 class ClienteController extends Controller
 {
-    // Display a list of all clients
+    /**
+     * Display a listing of the customers.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
+        // Retrieve all customers from the database.
         $clientes = Cliente::all();
+        
+        // Return the view with the list of customers.
         return view('clientes.index', compact('clientes'));
     }
 
-    // Show the form for creating a new client
+    /**
+     * Show the form for creating a new customer.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
+        // Return the view for creating a new customer.
         return view('clientes.create');
     }
 
-    // Store a newly created client in the database
+    /**
+     * Store a newly created customer in the database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-        // Validate the input data
-        $request->validate([
+        // Validate the input data.
+        $validated = $request->validate([
             'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:clientes,email',
+            'email' => 'required|email|max:255',
             'telefone' => 'required|string|max:15',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        // Store the uploaded photo in the 'public' disk
-        $path = $request->file('foto')->store('fotos', 'public');
+        // Handle the file upload if a photo is provided.
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('clientes', 'public');
+        }
 
-        // Create a new client record
-        Cliente::create([
-            'nome' => $request->nome,
-            'email' => $request->email,
-            'telefone' => $request->telefone,
-            'foto' => $path,
-        ]);
+        // Create a new customer in the database.
+        Cliente::create($validated);
 
-        // Redirect to the clients list
-        return redirect()->route('clientes.index');
+        // Redirect back to the customer list with a success message.
+        return redirect()->route('clientes.index')->with('success', 'Customer created successfully!');
     }
 
-    // Show the form for editing an existing client
-    public function edit(Cliente $cliente)
+    /**
+     * Show the form for editing a specified customer.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function edit($id)
     {
+        // Find the customer by ID.
+        $cliente = Cliente::findOrFail($id);
+
+        // Return the edit form view.
         return view('clientes.edit', compact('cliente'));
     }
 
-    // Update the specified client in the database
-    public function update(Request $request, Cliente $cliente)
+    /**
+     * Update the specified customer in the database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $id)
     {
-        // Validate the input data
-        $request->validate([
+        // Validate the input data.
+        $validated = $request->validate([
             'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:clientes,email,' . $cliente->id,
+            'email' => 'required|email|max:255',
             'telefone' => 'required|string|max:15',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        // Update the photo if a new one is uploaded
+        // Find the customer by ID.
+        $cliente = Cliente::findOrFail($id);
+
+        // Handle the file upload if a new photo is provided.
         if ($request->hasFile('foto')) {
-            Storage::disk('public')->delete($cliente->foto);
-            $path = $request->file('foto')->store('fotos', 'public');
-            $cliente->foto = $path;
+            // Delete the old photo if it exists.
+            if ($cliente->foto) {
+                Storage::disk('public')->delete($cliente->foto);
+            }
+
+            // Store the new photo.
+            $validated['foto'] = $request->file('foto')->store('clientes', 'public');
         }
 
-        // Update other fields
-        $cliente->update($request->only('nome', 'email', 'telefone'));
+        // Update the customer's data.
+        $cliente->update($validated);
 
-        // Redirect to the clients list
-        return redirect()->route('clientes.index');
+        // Redirect back to the customer list with a success message.
+        return redirect()->route('clientes.index')->with('success', 'Customer updated successfully!');
     }
 
-    // Remove the specified client from the database
-    public function destroy(Cliente $cliente)
+    /**
+     * Remove the specified customer from the database.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy($id)
     {
-        // Delete the associated photo from storage
-        Storage::disk('public')->delete($cliente->foto);
+        // Find the customer by ID.
+        $cliente = Cliente::findOrFail($id);
+
+        // Delete the customer's photo if it exists.
+        if ($cliente->foto) {
+            Storage::disk('public')->delete($cliente->foto);
+        }
+
+        // Delete the customer record.
         $cliente->delete();
-        return redirect()->route('clientes.index');
+
+        // Redirect back to the customer list with a success message.
+        return redirect()->route('clientes.index')->with('success', 'Customer deleted successfully!');
     }
 }

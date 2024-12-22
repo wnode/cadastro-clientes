@@ -3,19 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// Route to list customers
+Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route to show the create form
+Route::get('/clientes/create', [ClienteController::class, 'create'])->name('clientes.create');
 
-Route::resource('clientes', ClienteController::class);
+// Route to store a new customer
+Route::post('/clientes', [ClienteController::class, 'store'])->name('clientes.store');
+
+// Route to show the edit form
+Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit'])->name('clientes.edit');
+
+// Route to update a customer
+Route::put('/clientes/{id}', [ClienteController::class, 'update'])->name('clientes.update');
+
+// Route to delete a customer
+Route::delete('/clientes/{id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
