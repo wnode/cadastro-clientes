@@ -106,7 +106,7 @@ Execute testes unitários com PHPUnit:
 ## Modelo Relacional
 ```mermaid
 erDiagram
-    CLIENTES {
+    clientes {
         int id PK
         varchar nome
         varchar email
@@ -118,6 +118,7 @@ erDiagram
 ```
 
 ## Diagrama Simplificado
+```scss
 clientes
 ---------------------------------
 | id (PK)     INT              |
@@ -128,4 +129,5 @@ clientes
 | created_at  TIMESTAMP        |
 | updated_at  TIMESTAMP        |
 ---------------------------------
+```
 
