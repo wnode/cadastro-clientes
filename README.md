@@ -7,7 +7,7 @@ Este projeto é um **Sistema de Cadastro de Clientes** desenvolvido com o **Fram
 - **Upload de Fotos**: Envio e exibição de fotos dos clientes.
 - **Validação**: Validação de campos como nome, e-mail, telefone e imagem.
 - **Arquitetura MVC**: Código organizado seguindo o padrão MVC do Laravel.
-- **Interfacec**: Interface amigável utilizando templates Blade.
+- **Interface**: Interface amigável utilizando templates Blade.
 
 ## Requisitos
 - PHP >= 8.0
