@@ -131,3 +131,6 @@ clientes
 ---------------------------------
 ```
 
+## Relacionamentos:
+Um cliente possui apenas uma foto associada a ele.
+O campo foto armazena o caminho do arquivo (não a imagem em si).
