@@ -1,10 +1,13 @@
 @extends('layout')
 
-@section('title', 'Lista de Clientes')
-
 @section('content')
-<a href="{{ route('clientes.create') }}" class="btn btn-primary mb-3">Novo Cliente</a>
-<table class="table table-bordered">
+<h1>Client List</h1>
+
+<!-- Button to add a new client -->
+<a href="{{ route('clientes.create') }}">Adicionar Novo Cliente</a>
+
+<!-- Clients table -->
+<table>
     <thead>
         <tr>
             <th>Foto</th>
@@ -15,21 +18,28 @@
         </tr>
     </thead>
     <tbody>
+        <!-- Loop through each client and display their data -->
         @foreach($clientes as $cliente)
-            <tr>
-                <td><img src="{{ asset('storage/' . $cliente->foto) }}" width="50"></td>
-                <td>{{ $cliente->nome }}</td>
-                <td>{{ $cliente->email }}</td>
-                <td>{{ $cliente->telefone }}</td>
-                <td>
-                    <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-warning btn-sm">Editar</a>
-                    <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                    </form>
-                </td>
-            </tr>
+        <tr>
+            <!-- Display the client's photo -->
+            <td><img src="{{ asset('storage/' . $cliente->foto) }}" width="50"></td>
+            <!-- Display the client's name -->
+            <td>{{ $cliente->nome }}</td>
+            <!-- Display the client's email -->
+            <td>{{ $cliente->email }}</td>
+            <!-- Display the client's phone -->
+            <td>{{ $cliente->telefone }}</td>
+            <td>
+                <!-- Link to edit the client -->
+                <a href="{{ route('clientes.edit', $cliente) }}">Edit</a>
+                <!-- Form to delete the client -->
+                <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                </form>
+            </td>
+        </tr>
         @endforeach
     </tbody>
 </table>
