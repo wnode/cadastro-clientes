@@ -7,7 +7,7 @@ Este projeto é um **Sistema de Cadastro de Clientes** desenvolvido com o **Fram
 - **Upload de Fotos**: Envio e exibição de fotos dos clientes.
 - **Validação**: Validação de campos como nome, e-mail, telefone e imagem.
 - **Arquitetura MVC**: Código organizado seguindo o padrão MVC do Laravel.
-- **Interfaces Responsivas**: Interface amigável utilizando templates Blade.
+- **Interface**: Interface amigável utilizando templates Blade.
 
 ## Requisitos
 - PHP >= 8.0
@@ -19,12 +19,12 @@ Este projeto é um **Sistema de Cadastro de Clientes** desenvolvido com o **Fram
 ## Instalação
 1. Clone o repositório:
 ```bash
- git clone https://github.com/username/client-management-system.git
+ git clone https://github.com/wnode/cadastro-clientes.git
 ```
 
 2. Navegue até a pasta do projeto:
 ```bash
- cd client-management-system
+ cd cadastro-clientes
 ```
 
 3. Instale as dependências:
