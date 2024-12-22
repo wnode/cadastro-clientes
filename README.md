@@ -117,4 +117,15 @@ erDiagram
     }
 ```
 
+## Diagrama Simplificado
+clientes
+---------------------------------
+| id (PK)     INT              |
+| nome        VARCHAR(255)     |
+| email       VARCHAR(255)     |
+| telefone    VARCHAR(15)      |
+| foto        VARCHAR(255)     |
+| created_at  TIMESTAMP        |
+| updated_at  TIMESTAMP        |
+---------------------------------
 
